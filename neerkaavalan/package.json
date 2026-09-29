@@ -1,0 +1,17 @@
+{
+  "name": "neerkaavalan",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NeerKaavalan - AI-powered autonomous water-body monitoring and floating-waste management platform",
+  "packageManager": "pnpm@10.34.6",
+  "scripts": {
+    "dev": "pnpm --parallel --filter './apps/*' --filter './services/*' dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
