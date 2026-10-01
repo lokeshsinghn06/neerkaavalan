@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgis/postgis:17-3.5
+    container_name: neerkaavalan-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: neerkaavalan
+      POSTGRES_USER: neerkaavalan
+      POSTGRES_PASSWORD: neerkaavalan_dev
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - neerkaavalan_postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/postgres/init:/docker-entrypoint-initdb.d
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U neerkaavalan -d neerkaavalan"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  neerkaavalan_postgres_data:
