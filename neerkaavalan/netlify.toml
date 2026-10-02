@@ -1,5 +1,5 @@
 [build]
-  command = "npm i -g pnpm && pnpm install && pnpm --filter dashboard build"
+  command = "pnpm install --frozen-lockfile && pnpm --filter dashboard build"
   publish = "apps/dashboard/dist"
 
 [[redirects]]
