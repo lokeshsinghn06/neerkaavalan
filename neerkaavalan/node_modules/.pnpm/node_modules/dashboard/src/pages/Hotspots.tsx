@@ -23,8 +23,12 @@ export default function Hotspots() {
 
   const load = () => {
     fetch('http://localhost:4000/api/hotspots')
-      .then((res) => res.json())
-      .then((json) => setHotspots(json.data ?? []))
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (!json) return;
+        setHotspots(json.data ?? []);
+      })
+      .catch(() => {})
       .finally(() => setLoading(false));
   };
 

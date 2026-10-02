@@ -28,17 +28,26 @@ export default function Analytics() {
 
   useEffect(() => {
     Promise.all([
-      fetch('http://localhost:4000/api/detections').then((r) => r.json()),
-      fetch('http://localhost:4000/api/missions').then((r) => r.json()),
-      fetch('http://localhost:4000/api/hotspots').then((r) => r.json()),
-      fetch('http://localhost:4000/api/water-bodies').then((r) => r.json()),
+      fetch('http://localhost:4000/api/detections')
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null),
+      fetch('http://localhost:4000/api/missions')
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null),
+      fetch('http://localhost:4000/api/hotspots')
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null),
+      fetch('http://localhost:4000/api/water-bodies')
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null),
     ])
       .then(([detectionsJson, missionsJson, hotspotsJson, waterBodiesJson]) => {
-        setDetections(detectionsJson.data ?? []);
-        setMissions(missionsJson.data ?? []);
-        setHotspots(hotspotsJson.data ?? []);
-        setWaterBodies(waterBodiesJson.data ?? []);
+        if (detectionsJson?.data) setDetections(detectionsJson.data);
+        if (missionsJson?.data) setMissions(missionsJson.data);
+        if (hotspotsJson?.data) setHotspots(hotspotsJson.data);
+        if (waterBodiesJson?.data) setWaterBodies(waterBodiesJson.data);
       })
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 

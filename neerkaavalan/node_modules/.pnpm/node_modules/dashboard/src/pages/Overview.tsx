@@ -108,29 +108,14 @@ export default function Overview() {
 
   const loadDashboard = async () => {
     try {
-      const [
-        waterBodiesResponse,
-        hotspotsResponse,
-        missionsResponse,
-        usvResponse,
-        droneResponse,
-      ] = await Promise.all([
-        fetch(`${API}/water-bodies`),
-        fetch(`${API}/hotspots`),
-        fetch(`${API}/missions`),
-        fetch(`${API}/devices/NK-U01/state`),
-        fetch(`${API}/devices/NK-D01/state`),
-      ]);
-
-      if (
-        !waterBodiesResponse.ok ||
-        !hotspotsResponse.ok ||
-        !missionsResponse.ok ||
-        !usvResponse.ok ||
-        !droneResponse.ok
-      ) {
-        throw new Error('One or more dashboard APIs are unavailable.');
-      }
+      const fetchJson = async (url: string) => {
+        try {
+          const res = await fetch(url);
+          return res.ok ? await res.json() : null;
+        } catch {
+          return null;
+        }
+      };
 
       const [
         waterBodiesData,
@@ -139,25 +124,32 @@ export default function Overview() {
         usvData,
         droneData,
       ] = await Promise.all([
-        waterBodiesResponse.json(),
-        hotspotsResponse.json(),
-        missionsResponse.json(),
-        usvResponse.json(),
-        droneResponse.json(),
+        fetchJson(`${API}/water-bodies`),
+        fetchJson(`${API}/hotspots`),
+        fetchJson(`${API}/missions`),
+        fetchJson(`${API}/devices/NK-U01/state`),
+        fetchJson(`${API}/devices/NK-D01/state`),
       ]);
 
-      setState({
-        waterBodies: waterBodiesData.data ?? [],
-        hotspots: hotspotsData.data ?? [],
-        missions: missionsData.data ?? [],
+      const hasAnyData =
+        waterBodiesData || hotspotsData || missionsData || usvData || droneData;
+
+      if (!hasAnyData) {
+        throw new Error('Connecting to NeerKaavalan API server (http://localhost:4000)...');
+      }
+
+      setState((current) => ({
+        waterBodies: waterBodiesData?.data ?? current.waterBodies,
+        hotspots: hotspotsData?.data ?? current.hotspots,
+        missions: missionsData?.data ?? current.missions,
         devices: [
-          usvData.device,
-          droneData.device,
+          usvData?.device ?? current.devices[0],
+          droneData?.device ?? current.devices[1],
         ].filter(Boolean),
         loading: false,
         error: null,
         refreshedAt: new Date(),
-      });
+      }));
     } catch (error) {
       setState((current) => ({
         ...current,

@@ -12,6 +12,7 @@ const titles: Record<string, string> = {
   '/missions': 'Mission Control',
   '/telemetry': 'Fleet Telemetry',
   '/analytics': 'System Analytics',
+  '/verification': 'Cleanup Verification',
 };
 
 export default function Topbar() {

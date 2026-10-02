@@ -22,7 +22,7 @@ console.log('[STEP 1] Disconnecting device');
 
 await gateway.disconnectDevice(deviceCode);
 
-let state = await gateway.getDeviceState(deviceCode);
+let state: import('./types.js').DeviceState | null = await gateway.getDeviceState(deviceCode);
 
 console.log('Connection:', state.connectionStatus);
 

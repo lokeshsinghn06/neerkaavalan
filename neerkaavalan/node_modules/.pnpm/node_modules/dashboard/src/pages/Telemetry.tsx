@@ -15,11 +15,13 @@ export default function Telemetry() {
 
   const load = () => {
     fetch('http://localhost:4000/api/telemetry/NK-U01')
-      .then((res) => res.json())
+      .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
+        if (!json) return;
         const rows = json.data ?? json.telemetry ?? [];
         setPoints(rows);
       })
+      .catch(() => {})
       .finally(() => setLoading(false));
   };
 
