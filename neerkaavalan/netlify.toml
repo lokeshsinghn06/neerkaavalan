@@ -1,3 +1,4 @@
+# Netlify deployment configuration
 [build]
   command = "pnpm install --frozen-lockfile && pnpm --filter dashboard build"
   publish = "apps/dashboard/dist"
