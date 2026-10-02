@@ -6,6 +6,9 @@
   "packageManager": "pnpm@10.34.6",
   "scripts": {
     "dev": "pnpm --parallel --filter './apps/*' --filter './services/*' dev",
+    "dev:api": "pnpm --filter @neerkaavalan/api dev",
+    "dev:dashboard": "pnpm --filter dashboard dev",
+    "dev:simulator": "pnpm --filter @neerkaavalan/simulator dev",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "lint": "pnpm -r lint",
@@ -13,5 +16,8 @@
   },
   "devDependencies": {
     "prettier": "^3.6.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   }
 }

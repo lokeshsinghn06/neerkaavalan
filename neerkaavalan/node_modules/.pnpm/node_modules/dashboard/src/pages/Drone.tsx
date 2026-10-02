@@ -33,13 +33,22 @@ export default function Drone() {
 
   useEffect(() => {
     Promise.all([
-      fetch('http://localhost:4000/api/devices/NK-D01/state').then((r) => r.json()),
-      fetch('http://localhost:4000/api/detections').then((r) => r.json()),
+      fetch('http://localhost:4000/api/devices/NK-D01/state')
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null),
+      fetch('http://localhost:4000/api/detections')
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null),
     ])
       .then(([deviceJson, detectionJson]) => {
-        setDevice(deviceJson.device ?? null);
-        setDetections(detectionJson.data ?? []);
+        if (deviceJson?.device) {
+          setDevice(deviceJson.device);
+        }
+        if (detectionJson?.data) {
+          setDetections(detectionJson.data);
+        }
       })
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 

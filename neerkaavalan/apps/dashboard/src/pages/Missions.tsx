@@ -26,8 +26,12 @@ export default function Missions() {
 
   const load = () => {
     fetch('http://localhost:4000/api/missions')
-      .then((res) => res.json())
-      .then((json) => setMissions(json.data ?? []))
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (!json) return;
+        setMissions(json.data ?? []);
+      })
+      .catch(() => {})
       .finally(() => setLoading(false));
   };
 
