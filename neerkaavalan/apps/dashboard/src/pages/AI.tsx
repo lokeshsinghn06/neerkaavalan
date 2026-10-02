@@ -90,7 +90,7 @@ type DetectionResponse = {
 };
 
 const API_URL = 'http://localhost:4000';
-const AI_ENGINE_URL = 'http://localhost:5050';
+const AI_ENGINE_URL = 'https://neerkaavalan-production.up.railway.app';
 
 type ViewTab = 'upload' | 'results';
 type ImageView = 'original' | 'mask' | 'heatmap' | 'route';
