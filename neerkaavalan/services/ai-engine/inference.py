@@ -63,7 +63,9 @@ def load_model(checkpoint_path=CHECKPOINT_PATH):
 
     weights = torch.load(
         checkpoint_path,
-        map_location=DEVICE
+        map_location=DEVICE,
+        weights_only=False
+
     )
 
     model.load_state_dict(
